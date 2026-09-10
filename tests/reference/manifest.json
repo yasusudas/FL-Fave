@@ -1,0 +1,26 @@
+{
+  "repository": "https://github.com/exiftool/exiftool",
+  "commit": "2200871d9cef988051d2a99d67df3bda6cbb30a8",
+  "files": {
+    "Canon.jpg": "98c290283dbff10950bd0eac63bf95804fd09661de727df4f2946d203ca9e7a2",
+    "CanonRaw.cr2": "b5d3d26f3c85bcb35a52515eac060e2e362161893504013589ffd9ad2e9b004b",
+    "CanonRaw.cr3": "dc02aa55e277935b690879584e97c2d013f54d854afaec6f9d3274c99a918fd6",
+    "CanonRaw.crw": "604bdd78c66b51b59a0868d9c9ee792a8bb89c60cbbf83a37566c0e8a0201a4f",
+    "DNG.dng": "daa9ce7a2c6923815390d8566254ef4d4a75d68d1531afdb264bd4b39a8dfd89",
+    "ExifTool.tif": "ba7bd9a71eb2bb5a93ceaf851d4616d5df24f4cff752183045b679dd7ce65bce",
+    "FujiFilm.raf": "e12e30bd0cf5f160b82b93f043696c04d1d5f4628f1fdd19abdab9f8328d8bf0",
+    "JXL.jxl": "703e7e03afe9744f31186d2f3373ff866d444ebccbe973518ecdbbaeb814d95b",
+    "JXL2.jxl": "4bc68f38fa4c08441e77b3f0185737b8f08834274b59cfe6d3230f54edc4a5fb",
+    "Minolta.mrw": "9e7c235aec72b1e74517041cc226e38c320826770645bdc57ef19b508dbe92d5",
+    "Nikon.nef": "6fae30a2809b52ece100316f33a3fade4b65cf5690af2d62bb00f44ae052bdd6",
+    "PNG.png": "45f0bd6bd3c85cf8c79028dee8f0de5cd470eb3b0124d2c7559f0dd3de24a288",
+    "Panasonic.rw2": "431a1239713ce1bca8f0b422b9a094372246669432060e2a0a21d1fd2f761678",
+    "PhaseOne.iiq": "306efa7671f144b56cc0af8f7e22e8d3f7e33efe422fd0135f894bd3739c27be",
+    "Photoshop.psd": "45fa913bc5ab0e2bcce5dd725a10b513f5be164ea5a441ace1ef460ae3fb3e44",
+    "QuickTime.heic": "4e1785e9924600d0274176f52609a2d514481877103b91c714bd2088ea803ae7",
+    "RIFF.webp": "054fb882674304992a0af031a77df061c3f802c30891dbb8bc2d16e41213767d",
+    "Sigma.x3f": "09b19f5cf6f01618871074697bb39af1542911a14a865bad53279b13bb91c7df",
+    "SigmaDP2.x3f": "712163cf9e9c456a4d83069597179e8f1e5b348ed9ba23c987c58b7ce416896b",
+    "Sony.jpg": "7376ad79cad2ac750e765ad253df2f3ae297c2089a562d00d88e9338ea8980b7"
+  }
+}
