@@ -33,3 +33,15 @@
 .env.*
 !.env.example
 .DS_Store
+
+# Dependencies and generated output
+/node_modules/
+/.next/
+/out/
+/coverage/
+/playwright-report/
+/test-results/
+/public/parser/
+*.tsbuildinfo
+
+/.generated/
