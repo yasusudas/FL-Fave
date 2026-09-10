@@ -132,7 +132,7 @@ test("offline cached startup and WASM metadata parsing, no data transmission", a
   await context.setOffline(true);
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: /あなたの写真に、.*好きな画角がある。/ }),
+    page.getByText("おすすめレンズを使うカメラを教えてください。"),
   ).toBeVisible();
   const requests: any[] = [];
   page.on("request", (r) =>

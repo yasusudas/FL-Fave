@@ -126,26 +126,8 @@ main {
   padding: 0 48px 60px;
   min-height: calc(100vh - 162px);
 }
-.intro {
-  padding: 62px 0 36px;
-}
-.intro h1 {
-  margin-bottom: 18px;
-}
-.intro .lead {
-  font-size: 17px;
-  color: #383f35;
-  margin-bottom: 8px;
-}
-.intro p:last-child {
-  font-size: 13px;
-}
-.mobile-break {
-  display: none;
-}
 .setup {
-  border-top: 1px solid var(--line);
-  padding: 24px 0 26px;
+  padding: 48px 0 26px;
 }
 .setup-title {
   font-size: 12px;
@@ -708,11 +690,8 @@ footer {
   main {
     padding: 0 24px 40px;
   }
-  .intro {
-    padding: 40px 0 28px;
-  }
-  .intro .lead {
-    font-size: 14px;
+  .setup {
+    padding-top: 32px;
   }
   .select-grid {
     gap: 12px;
@@ -780,9 +759,6 @@ footer {
   }
   main {
     padding: 0 20px 32px;
-  }
-  .mobile-break {
-    display: block;
   }
   h1 {
     font-size: 29px;

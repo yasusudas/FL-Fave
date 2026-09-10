@@ -586,19 +586,6 @@ export default function Home() {
         )}
         {view === "start" && (
           <>
-            <div className="intro">
-              <h1>
-                あなたの写真に、
-                <br className="mobile-break" />
-                好きな画角がある。
-              </h1>
-              <p className="lead">
-                写真はアップロードされません。解析はこの端末の中だけで完結します。
-              </p>
-              <p>
-                写真の入ったフォルダから、よく使う焦点距離と、次の一本を見つけましょう。
-              </p>
-            </div>
             <section aria-label="カメラの設定" className="setup">
               <p className="setup-title">
                 おすすめレンズを使うカメラを教えてください。
