@@ -125,14 +125,15 @@ test("offline cached startup and WASM metadata parsing, no data transmission", a
   context,
 }) => {
   await setup(page);
+  await page.getByRole("button", { name: "About", exact: true }).click();
   await expect(
-    page.getByText("オフライン利用の準備完了", { exact: true }),
+    page.getByText(/オフライン利用の準備ができています/),
   ).toBeVisible({ timeout: 30000 });
   await page.reload();
   await context.setOffline(true);
   await page.reload();
   await expect(
-    page.getByText("おすすめレンズを使うカメラを教えてください。"),
+    page.getByText("撮影に使用したカメラを選択してください"),
   ).toBeVisible();
   const requests: any[] = [];
   page.on("request", (r) =>

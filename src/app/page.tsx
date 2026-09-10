@@ -247,8 +247,7 @@ export default function Home() {
     [message, setMessage] = useState(""),
     [error, setError] = useState(""),
     [diagnostics, setDiagnostics] = useState<Stats | null>(null),
-    [offlineReady, setOfflineReady] = useState(false),
-    [online, setOnline] = useState(true);
+    [offlineReady, setOfflineReady] = useState(false);
   const folderInput = useRef<HTMLInputElement>(null),
     photoInput = useRef<HTMLInputElement>(null),
     importInput = useRef<HTMLInputElement>(null),
@@ -271,10 +270,6 @@ export default function Home() {
       if (value && validTarget(value)) setTarget(value);
     } catch {}
     void refresh();
-    setOnline(navigator.onLine);
-    const on = () => setOnline(navigator.onLine);
-    window.addEventListener("online", on);
-    window.addEventListener("offline", on);
     if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
       navigator.serviceWorker
         .register("/sw.js", { updateViaCache: "none" })
@@ -298,8 +293,6 @@ export default function Home() {
     }
     return () => {
       worker.current?.terminate();
-      window.removeEventListener("online", on);
-      window.removeEventListener("offline", on);
     };
   }, []);
   useEffect(() => {
@@ -487,7 +480,6 @@ export default function Home() {
     <>
       <div className="section-heading">
         <h2>解析履歴</h2>
-        <span>このブラウザだけに保存</span>
       </div>
       {history.length === 0 ? (
         <p className="empty-history">
@@ -548,13 +540,10 @@ export default function Home() {
         >
           FL-Fave<span className="brand-dot">.</span>
         </a>
-        <span className="brand-note">
-          あなたの写真から、見えてくる好きな画角。
-        </span>
         <nav aria-label="メインナビゲーション">
           {(
             [
-              ["start", "新しい解析"],
+              ["start", "新規解析"],
               ["history", "履歴"],
               ["about", "About"],
             ] as const
@@ -588,7 +577,7 @@ export default function Home() {
           <>
             <section aria-label="カメラの設定" className="setup">
               <p className="setup-title">
-                おすすめレンズを使うカメラを教えてください。
+                撮影に使用したカメラを選択してください
               </p>
               <div className="select-grid">
                 <label>
@@ -694,7 +683,6 @@ export default function Home() {
             ) : (
               <section className="source-panel">
                 <h2>写真の入ったフォルダを選択してください</h2>
-                <p>サブフォルダの画像も、まとめて解析します。</p>
                 <div className="source-actions">
                   <button
                     className="primary folder-button"
@@ -712,9 +700,6 @@ export default function Home() {
                   </button>
                 </div>
                 <p className="formats">JPEG / PNG / HEIC / AVIF / RAW ほか</p>
-                <p className="subtle">
-                  スマートフォンでは、写真を複数選択して解析できます。
-                </p>
               </section>
             )}
             {diagnostics && (
@@ -1083,14 +1068,7 @@ export default function Home() {
         />
       </main>
       <footer>
-        <span>FL-Fave · あなたの写真は、あなたのもの。</span>
-        <span>
-          {!online
-            ? "オフライン"
-            : offlineReady
-              ? "オフライン利用の準備完了"
-              : "この端末で解析"}
-        </span>
+        <span>FL-Fave</span>
       </footer>
     </>
   );
