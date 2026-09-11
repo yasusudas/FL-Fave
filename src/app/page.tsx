@@ -57,7 +57,7 @@ function Diagnostics({ stats }: { stats: Stats }) {
         [
           ["detected", "検出画像"],
           ["pairs", "RAW＋JPEGペア"],
-          ["shots", "重複排除後の撮影"],
+          ["shots", "重複排除後の枚数"],
           ["success", "焦点距離取得成功"],
           ["missing", "焦点距離情報なし"],
           ["errors", "読み取りエラー"],
@@ -209,14 +209,14 @@ function Distribution({
         </div>
         <div className="axis-caption">
           <span>広角</span>
-          <span>焦点距離（mm） / 縦軸：撮影数</span>
+          <span>焦点距離（mm） / 縦軸：枚数</span>
           <span>望遠</span>
         </div>
       </section>
       <section className="section">
         <div className="section-heading">
           <h2>よく使う焦点距離ランキング</h2>
-          <span>撮影数10枚以上</span>
+          <span>10枚以上</span>
         </div>
         <div
           className="table-scroll"
@@ -230,7 +230,7 @@ function Distribution({
               <tr>
                 <th>順位</th>
                 <th>焦点距離</th>
-                <th>撮影数</th>
+                <th>枚数</th>
               </tr>
             </thead>
             <tbody>
@@ -545,7 +545,7 @@ export default function Home() {
                     "カメラ未選択"}
                 </strong>
                 <span>{system(r.targetCamera)}</span>
-                <span>{number(r.analysis.stats.success)} 撮影</span>
+                <span>{number(r.analysis.stats.success)} 枚</span>
               </button>
               <button
                 className="text-button danger"
@@ -850,7 +850,7 @@ export default function Home() {
               <div className="shot-total">
                 <strong>{number(active.stats.success)}</strong>
                 <span>
-                  撮影を分析 / 全 {number(result.analysis.stats.shots)} 撮影
+                  枚を分析 / 全 {number(result.analysis.stats.shots)} 枚
                 </span>
               </div>
             </div>
@@ -871,7 +871,7 @@ export default function Home() {
                     </div>
                   ))
                 ) : (
-                  <p>選択中のカメラに、分析できる撮影がありません。</p>
+                  <p>選択中のカメラに、分析できる写真がありません。</p>
                 )}
               </div>
               <div className="summary-controls">
@@ -908,7 +908,7 @@ export default function Home() {
                     <span>
                       <b>{g.model}</b>
                       <small>
-                        {g.manufacturer} · {number(g.stats.success)} 撮影
+                        {g.manufacturer} · {number(g.stats.success)} 枚
                         {g.match !== "matched"
                           ? ` · ${g.match === "unknown" ? "機種不明" : "DB未登録"}`
                           : ""}
@@ -916,7 +916,7 @@ export default function Home() {
                       {g.sources.fallback > 0 && (
                         <small>
                           選択センサー（{g.cropFactor}×）で換算：
-                          {g.sources.fallback}撮影
+                          {g.sources.fallback}枚
                         </small>
                       )}
                     </span>
@@ -1039,7 +1039,7 @@ export default function Home() {
               </div>
               <Diagnostics stats={result.analysis.stats} />
               <p className="subtle">
-                RAW＋JPEGの同時記録ペアは1撮影。通常のコピーや書き出し画像は、それぞれ1件として数えます。
+                RAW＋JPEGの同時記録ペアは1枚。通常のコピーや書き出し画像は、それぞれ1枚として数えます。
               </p>
             </section>
             <section className="export-section">
