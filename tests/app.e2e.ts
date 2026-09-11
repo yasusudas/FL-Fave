@@ -291,3 +291,83 @@ test("AVIF, PNG, WebP and PSB retain focal metadata without retaining private ta
     /PRIVATE-TEST|Artist|Copyright|DateTimeOriginal/,
   );
 });
+
+test("focal ranking threshold, ordering and horizontal zoom on desktop and mobile", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await setup(page);
+  const files = [
+    [23, 12],
+    [35, 10],
+    [50, 10],
+    [85, 9],
+    [600, 1],
+  ].flatMap(([focal, count]) =>
+    Array.from({ length: count }, (_, i) => ({
+      name: `${focal}-${i}.jpg`,
+      mimeType: "image/jpeg",
+      buffer: jpeg(focal),
+    })),
+  );
+  await page.getByTestId("photo-input").setInputFiles(files);
+  await page.getByRole("button", { name: "実焦点距離", exact: true }).click();
+  const ranking = page.getByLabel("焦点距離ランキング", { exact: true });
+  const rows = ranking.locator("tbody tr");
+  await expect(rows).toHaveCount(3);
+  await expect(rows.nth(0)).toContainText("1位");
+  await expect(rows.nth(0)).toContainText("23 mm");
+  await expect(rows.nth(0).locator("td").last()).toHaveText("12");
+  await expect(rows.nth(1)).toContainText("35 mm");
+  await expect(rows.nth(2)).toContainText("50 mm");
+  await expect(rows.nth(2).locator("td").last()).toHaveText("10");
+  await expect(ranking).not.toContainText("85 mm");
+  const chart = page.locator(".chart-scroll");
+  const fits = () =>
+    chart.evaluate((el) => el.scrollWidth <= el.clientWidth + 1);
+  await expect.poll(fits).toBe(true);
+  await page.locator(".chart-controls").scrollIntoViewIfNeeded();
+  await expect(chart.locator(".recharts-xAxis-tick-labels")).toContainText(
+    "600",
+  );
+  await page.locator(".chart-controls").scrollIntoViewIfNeeded();
+  await page.screenshot({
+    path: "/tmp/fl-fave-qa/ranking-overview.png",
+    fullPage: true,
+  });
+  const zoom = page.getByLabel("横方向の拡大率");
+  await zoom.fill("100");
+  await expect.poll(fits).toBe(false);
+  await chart.evaluate((el) => {
+    el.scrollLeft = el.scrollWidth;
+  });
+  await expect
+    .poll(() => chart.evaluate((el) => el.scrollLeft))
+    .toBeGreaterThan(1000);
+  await page.screenshot({ path: "/tmp/fl-fave-qa/ranking-zoom.png" });
+  await page.getByRole("button", { name: "全体表示", exact: true }).click();
+  await expect.poll(fits).toBe(true);
+  await expect.poll(() => chart.evaluate((el) => el.scrollLeft)).toBe(0);
+  await page.getByRole("button", { name: "35mm判換算", exact: true }).click();
+  await expect(rows.nth(0)).toContainText("35 mm");
+  await expect(chart.locator(".recharts-xAxis-tick-labels")).toContainText(
+    "900",
+  );
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect.poll(fits).toBe(true);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await zoom.fill("100");
+  await expect.poll(fits).toBe(false);
+  await page.getByRole("button", { name: "全体表示", exact: true }).click();
+  await expect.poll(fits).toBe(true);
+  await page.screenshot({
+    path: "/tmp/fl-fave-qa/ranking-mobile.png",
+    fullPage: true,
+  });
+  expect(errors).toEqual([]);
+});

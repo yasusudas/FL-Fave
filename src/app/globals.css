@@ -444,6 +444,29 @@ select:disabled {
   font-size: 10px;
   color: var(--muted);
 }
+.chart-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+.chart-controls button {
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 8px 12px;
+}
+.chart-zoom-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chart-controls input {
+  width: 180px;
+  max-width: 40vw;
+  accent-color: #8aac16;
+}
 .chart-scroll {
   overflow-x: auto;
   overflow-y: hidden;

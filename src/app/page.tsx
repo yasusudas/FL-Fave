@@ -79,9 +79,25 @@ function Distribution({
   modal: number[];
 }) {
   const [tableTop, setTableTop] = useState(0);
+  const [zoom, setZoom] = useState(0);
+  const ranking = useMemo(
+    () =>
+      rows
+        .filter((r) => r.count >= 10)
+        .sort((a, b) => b.count - a.count || a.focal - b.focal),
+    [rows],
+  );
+  const chartRows = useMemo(() => {
+    const counts = new Map(rows.map((r) => [r.focal, r]));
+    return Array.from(
+      { length: Math.max(600, rows.at(-1)?.focal ?? 600) },
+      (_, i) => counts.get(i + 1) ?? { focal: i + 1, count: 0, ratio: 0 },
+    );
+  }, [rows]);
   const [chartLeft, setChartLeft] = useState(0);
   const [viewport, setViewport] = useState(900);
   const container = useRef<HTMLDivElement>(null);
+  const tableContainer = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const el = container.current;
     if (!el) return;
@@ -92,31 +108,53 @@ function Distribution({
   useEffect(() => {
     setTableTop(0);
     setChartLeft(0);
+    if (tableContainer.current) tableContainer.current.scrollTop = 0;
     if (container.current) container.current.scrollLeft = 0;
   }, [rows]);
-  // Every bin has a scroll position; windowed rendering avoids huge DOMs without merging/omitting bins.
-  const virtual = rows.length > 300;
-  const unit = 24;
-  const start = virtual ? Math.max(0, Math.floor(chartLeft / unit) - 3) : 0;
+  // Zooming out fits the whole range; zooming in retains individual 1 mm bins.
+  const fitUnit = Math.max(1, viewport - 80) / chartRows.length;
+  const unit = fitUnit + ((Math.max(24, fitUnit) - fitUnit) * zoom) / 100;
+  const totalWidth = Math.max(viewport, chartRows.length * unit + 80);
+  const virtual = chartRows.length > 1000 && zoom > 0;
+  const start = virtual ? Math.max(0, Math.floor(chartLeft / unit) - 4) : 0;
   const end = virtual
-    ? Math.min(rows.length, start + Math.ceil(viewport / unit) + 8)
-    : rows.length;
-  const windowRows = rows.slice(start, end);
-  const width = virtual
-    ? windowRows.length * unit
-    : Math.max(viewport, rows.length * unit);
-  const totalWidth = virtual ? rows.length * unit : width;
+    ? Math.min(chartRows.length, start + Math.ceil(viewport / unit) + 12)
+    : chartRows.length;
+  const windowRows = chartRows.slice(start, end);
+  const width = virtual ? windowRows.length * unit + 80 : totalWidth;
   const max = rows.reduce((max, r) => Math.max(max, r.count), 1);
   const tableStart = Math.max(0, Math.floor(tableTop / 40) - 4),
-    tableEnd = Math.min(rows.length, tableStart + 24);
+    tableEnd = Math.min(ranking.length, tableStart + 24);
+  function changeZoom(value: number) {
+    setZoom(value);
+    setChartLeft(0);
+    if (container.current) container.current.scrollLeft = 0;
+  }
   return (
     <>
       <section className="section">
         <div className="section-heading">
           <h2>焦点距離の分布</h2>
-          <span>
-            1 mm刻み · {rows[0]?.focal}–{rows.at(-1)?.focal} mm
-          </span>
+          <span>1 mm刻み · 1–{chartRows.length} mm</span>
+        </div>
+        <div className="chart-controls">
+          <button type="button" onClick={() => changeZoom(0)}>
+            全体表示
+          </button>
+          <label htmlFor="chart-zoom">横方向の拡大率</label>
+          <div className="chart-zoom-range">
+            <span>縮小</span>
+            <input
+              id="chart-zoom"
+              type="range"
+              min="0"
+              max="100"
+              step="1"
+              value={zoom}
+              onChange={(e) => changeZoom(Number(e.target.value))}
+            />
+            <span>拡大</span>
+          </div>
         </div>
         <div
           className="chart-scroll"
@@ -139,7 +177,8 @@ function Distribution({
                 <CartesianGrid vertical={false} stroke="#e9ebea" />
                 <XAxis
                   dataKey="focal"
-                  interval={0}
+                  interval="preserveStartEnd"
+                  minTickGap={12}
                   tick={{ fontSize: 11 }}
                   tickLine={false}
                   axisLine={{ stroke: "#bfc4c0" }}
@@ -176,24 +215,30 @@ function Distribution({
       </section>
       <section className="section">
         <div className="section-heading">
-          <h2>1 mmごとの詳細</h2>
-          <span>0件の焦点距離も表示</span>
+          <h2>よく使う焦点距離ランキング</h2>
+          <span>撮影数10枚以上</span>
         </div>
         <div
           className="table-scroll"
+          ref={tableContainer}
           onScroll={(e) => setTableTop(e.currentTarget.scrollTop)}
           tabIndex={0}
-          aria-label="度数分布表"
+          aria-label="焦点距離ランキング"
         >
           <table>
             <thead>
               <tr>
+                <th>順位</th>
                 <th>焦点距離</th>
                 <th>撮影数</th>
-                <th>割合</th>
               </tr>
             </thead>
             <tbody>
+              {ranking.length === 0 && (
+                <tr>
+                  <td colSpan={3}>10枚以上撮影された焦点距離はありません。</td>
+                </tr>
+              )}
               {tableStart > 0 && (
                 <tr aria-hidden="true">
                   <td
@@ -202,11 +247,12 @@ function Distribution({
                   />
                 </tr>
               )}
-              {rows.slice(tableStart, tableEnd).map((r) => (
+              {ranking.slice(tableStart, tableEnd).map((r, index) => (
                 <tr
                   key={r.focal}
                   className={modal.includes(r.focal) ? "modal-row" : ""}
                 >
+                  <td>{tableStart + index + 1}位</td>
                   <td>
                     {r.focal} mm{" "}
                     {modal.includes(r.focal) && (
@@ -214,15 +260,14 @@ function Distribution({
                     )}
                   </td>
                   <td>{number(r.count)}</td>
-                  <td>{(r.ratio * 100).toFixed(2)}%</td>
                 </tr>
               ))}
-              {tableEnd < rows.length && (
+              {tableEnd < ranking.length && (
                 <tr aria-hidden="true">
                   <td
                     colSpan={3}
                     style={{
-                      height: (rows.length - tableEnd) * 40,
+                      height: (ranking.length - tableEnd) * 40,
                       padding: 0,
                     }}
                   />
