@@ -45,3 +45,10 @@
 *.tsbuildinfo
 
 /.generated/
+
+# Local-only tests and test tooling
+/tests/
+/playwright.config.ts
+/vitest.config.ts
+/scripts/fetch-test-fixtures.mjs
+/blob-report/

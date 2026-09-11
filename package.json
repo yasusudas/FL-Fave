@@ -11,7 +11,7 @@
     "test:e2e": "playwright test",
     "test:fixtures": "node scripts/fetch-test-fixtures.mjs",
     "pretest:e2e": "npm run test:fixtures",
-    "format:check": "prettier --check src scripts tests *.ts *.mjs README.md"
+    "format:check": "prettier --check --no-error-on-unmatched-pattern src scripts tests *.ts *.mjs README.md"
   },
   "dependencies": {
     "@uswriting/exiftool": "^1.0.9",

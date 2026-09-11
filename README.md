@@ -40,7 +40,9 @@ Web Worker内で必要なメタデータを抽出します。GPS・撮影者名�
 
 解析中の通信は同一オリジンのアプリ資材取得のみです。解析データのPOST、外部解析API、CDN、外部フォント、アクセス解析はありません。レンズの公式リンクはユーザーが押したときだけ別タブで開きます。
 
-## テスト
+## テスト（ローカル専用）
+
+テスト本体・設定・素材取得スクリプトはGit管理外です。以下はテスト一式を保持しているローカル環境でのみ実行できます。新規クローンでは `npm run typecheck` と `npm run build` で確認できます。
 
 ```sh
 npm run typecheck
@@ -76,7 +78,7 @@ Chromeデスクトップと390pxのモバイル表示で検証しています。
 - `src/data/`: 静的カタログと形式マニフェスト
 - `scripts/prepare-assets.mjs`: WASM同梱とWorker環境判定の補正
 - `scripts/build-sw.mjs`: 全ビルド資材をハッシュ化したService Worker生成
-- `tests/`: コアと実ブラウザの回帰テスト
+- `tests/`: コアと実ブラウザの回帰テスト（ローカル専用・Git管理外）
 
 Next.js静的出力、TypeScript、React、Tailwind CSS、Recharts、Dexie、exifr、ExifTool WASMを使用。`zeroperl-ts` のブラウザ判定がWorkerを認識しないため、ビルド時にその判定だけを補正しています。補正前の文字列を検査し、依存更新時に黙って壊れないようにしています。生成ファイルはGit管理外です。
 
