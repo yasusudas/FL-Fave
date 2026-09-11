@@ -1,4 +1,4 @@
-export const DB_INFO = { version: "2026.09.10.1", updatedAt: "2026-09-10" };
+export const DB_INFO = { version: "2026.09.11.1", updatedAt: "2026-09-11" };
 export const APP_VERSION = "1.0.0";
 export const sensors = [
   { id: "ff", name: "フルサイズ", crop: 1 },

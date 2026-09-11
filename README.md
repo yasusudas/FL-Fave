@@ -64,9 +64,9 @@ E2Eの前処理は、ExifTool公式リポジトリの固定コミットから公
 
 カメラ・レンズ・形式マニフェストは `src/data/` に同梱。Aboutにバージョン・更新日を表示します。製品URLはレンズレコードに保持し、価格は確認できた日本国内の税込公式価格だけを登録しています。不明な価格は推定せず `null` とし、価格比較では既知価格の後に並べます。
 
-初版のカタログは主要機種・主要単焦点レンズを収録し、全製品を網羅するものではありません。推薦は収録範囲内で行います。未登録カメラは画面に明示して換算倍率をフォールバックします。旧マウントなど候補のない条件では、3本を無理に埋めません。
+レンズカタログは2026年9月11日時点で、9メーカーの公式オンラインストアが販売している純正単焦点レンズを収録しています。カメラは主要機種を収録し、全製品を網羅するものではありません。推薦は収録範囲内で行います。未登録カメラは画面に明示して換算倍率をフォールバックします。旧マウントなど候補のない条件では、3本を無理に埋めません。
 
-価格の照合元には、各製品ページのほか、[フジフイルムモール](https://mall-jp.fujifilm.com/shop/c/cx-slens/)、[XC35mmF2公式ストア](https://mall-jp.fujifilm.com/shop/g/g16647434/)、[OM SYSTEM製品ページ](https://jp.omsystem.com/product/lens/single/premi/25_18_2/index.html)を使用しています。製品・価格を更新するときは `DB_INFO` のバージョン・日付も更新してください。
+価格とラインアップの照合元は各メーカーの公式オンラインストアです。[ソニーストア](https://www.sony.jp/ichigan/lineup/e-lens.html)、[キヤノンオンラインショップ](https://store.canon.jp/online/secure/rf_lens.aspx)、[ニコンダイレクト](https://nij.nikon.com/shop/r/r2060/)、[フジフイルムモール](https://mall-jp.fujifilm.com/shop/c/cx-slens/)、[OM SYSTEM STORE](https://jp.omsystem.com/product/lens/single/index.html)、[パナソニック公式](https://panasonic.jp/dc/products/s_series_lens.html)、[リコーイメージングストア](https://ricohimagingstore.com/Form/Product/ProductList.aspx?shop=0&cat=004001)、[ライカオンラインストア](https://store.leica-camera.jp/category/lens_sl-system)、[SIGMAオンラインショップ](https://www.sigma-onlineshop.jp/shop/c/c201020/)。期間限定セール価格ではなく通常価格を採用し、価格を公開していない製品は推定せず `null` にしています。光学系が同じ色違い・記念モデルは代表1本に集約し、立体VR用の二眼レンズは収録しません。製品・価格を更新するときは `DB_INFO` のバージョン・日付も更新してください。
 
 Chromeデスクトップと390pxのモバイル表示で検証しています。iPhone/Androidの実機写真ライブラリや、すべての機種のRAWは未検証です。OSの写真共有処理でEXIFが削除された画像からは焦点距離を復元できません。ブラウザのデータ削除で履歴・オフライン資材も失われるため、残したい結果は `.flfave` で書き出してください。
 
