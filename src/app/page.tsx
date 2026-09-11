@@ -192,7 +192,7 @@ function Distribution({
                 />
                 <Tooltip
                   labelFormatter={(v) => `${v} mm`}
-                  formatter={(v) => [`${v} 撮影`, "度数"]}
+                  formatter={(v) => [`${v} 枚`, null]}
                   cursor={{ fill: "#f0f2ed" }}
                 />
                 <Bar dataKey="count" isAnimationActive={false} maxBarSize={18}>
